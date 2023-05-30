@@ -23,7 +23,7 @@ class m230530_023541_create_apple_table extends Migration
 	    'appeared_at' => $this->timestamp()->notNull(),
 	    'fell_at' => $this->timestamp(),
 	    'status' => $this->string()->notNull()->check("status IN ($statuses)"),
-	    'eated' => $this->decimal()->notNull()->defaultValue(0)->check('eated >= 0 AND eated <= 100'),
+	    'eaten' => $this->decimal()->notNull()->defaultValue(0)->check('eaten >= 0 AND eaten <= 100'),
         ]);
     }
 

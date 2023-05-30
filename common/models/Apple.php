@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $appeared_at
  * @property integer $fell_at
  * @property string $status
- * @property float $eated
+ * @property float $eaten
  */
 class Apple extends ActiveRecord
 {
