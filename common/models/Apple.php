@@ -48,4 +48,30 @@ class Apple extends ActiveRecord
         ];
     }
 
+    /**
+     * Уронить яблоко
+     */
+    public function fallGround()
+    {
+        $this->status = self::STATUS_FELL;
+    }
+
+    /**
+     * Откусить яблоко
+     *
+     * @param float $val откушенный процент от исходного размера яблока
+     */
+    public function eat(float $val)
+    {
+        $this->eaten -= $val;
+    }
+
+    /**
+     * Отметить, что яблоко стало гнилым
+     */
+    public function rot()
+    {
+        $this->status = self::STATUS_ROTTEN;
+    }
+
 }
