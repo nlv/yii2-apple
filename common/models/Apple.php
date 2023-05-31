@@ -37,6 +37,14 @@ class Apple extends ActiveRecord
         return [self::STATUS_HANGING, self::STATUS_FELL, self::STATUS_ROTTEN];
     }
 
+    function __construct($color, $config = []) {
+        // if (!in_array($color, self::colors())) ...
+
+        $this->color = $color;
+        $this->status = self::STATUS_HANGING;
+        $this->appeared_at = time(); // TODO TimeZone
+        parent::__construct($config);
+    }
 
     /**
      * {@inheritdoc}
@@ -52,11 +60,11 @@ class Apple extends ActiveRecord
     public function rules()
     {
         return [
-	    [['status','color', 'appeared_at', 'eated'], 'required'],
+	        [['status','color', 'appeared_at', 'eaten'], 'required'],
             ['color', 'in', 'range' => [self::COLOR_RED, self::COLOR_GREEN, self::COLOR_YELLOW]],
             ['status', 'default', 'value' => self::STATUS_HANGING],
             ['status', 'in', 'range' => [self::STATUS_HANGING, self::STATUS_FELL, self::STATUS_ROTTEN]],
-	    ['eated', 'decimal', 'min' => 0, 'max' => 100],
+            ['eaten', 'number', 'min' => 0, 'max' => 100],
         ];
     }
 
@@ -66,6 +74,7 @@ class Apple extends ActiveRecord
     public function fallGround()
     {
         $this->status = self::STATUS_FELL;
+        $this->fell_at = time(); // TODO TimeZone
     }
 
     /**
@@ -75,7 +84,7 @@ class Apple extends ActiveRecord
      */
     public function eat(float $val)
     {
-        $this->eaten -= $val;
+        $this->eaten += $val;
     }
 
     /**

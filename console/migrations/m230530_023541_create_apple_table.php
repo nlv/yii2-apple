@@ -19,12 +19,13 @@ class m230530_023541_create_apple_table extends Migration
 
         $this->createTable('{{%apple}}', [
             'id' => $this->primaryKey(),
-	    'color' => $this->string()->notNull()->check("color IN ($colors)"),
-	    'appeared_at' => $this->timestamp()->notNull(),
-	    'fell_at' => $this->timestamp(),
-	    'status' => $this->string()->notNull()->check("status IN ($statuses)"),
-	    'eaten' => $this->decimal()->notNull()->defaultValue(0)->check('eaten >= 0 AND eaten <= 100'),
+	        'color' => $this->string()->notNull()->check("color IN ($colors)"),
+    	    'appeared_at' => $this->integer()->notNull(),
+    	    'fell_at' => $this->integer(),
+    	    'status' => $this->string()->notNull()->check("status IN ($statuses)"),
+    	    'eaten' => $this->float()->notNull()->defaultValue(0)->check('eaten >= 0 AND eaten <= 100'),
         ]);
+
     }
 
     /**
