@@ -14,8 +14,8 @@ class m230530_023541_create_apple_table extends Migration
      */
     public function safeUp()
     {
-        $colors = implode(',', array_map(fn($i) => "'$i'", [Apple::COLOR_RED, Apple::COLOR_GREEN, Apple::COLOR_YELLOW]));
-        $statuses = implode(',', array_map(fn($i) => "'$i'", [Apple::STATUS_HANGING, Apple::STATUS_FELL, Apple::STATUS_ROTTEN]));
+        $colors = implode(',', array_map(fn($i) => "'$i'", Apple::colors()));
+        $statuses = implode(',', array_map(fn($i) => "'$i'", Apple::statuses()));
 
         $this->createTable('{{%apple}}', [
             'id' => $this->primaryKey(),

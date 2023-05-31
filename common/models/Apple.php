@@ -26,6 +26,18 @@ class Apple extends ActiveRecord
     const STATUS_FELL = 'fell';
     const STATUS_ROTTEN = 'rotten';
 
+    public static function colors()
+    {
+        return [self::COLOR_RED, self::COLOR_GREEN, self::COLOR_YELLOW];
+    }
+
+
+    public static function statuses()
+    {
+        return [self::STATUS_HANGING, self::STATUS_FELL, self::STATUS_ROTTEN];
+    }
+
+
     /**
      * {@inheritdoc}
      */
