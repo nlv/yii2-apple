@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\LoginForm;
 use common\models\Apple;
+use backend\models\forms\ApplesGenerator;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -29,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'generate-apples'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -64,7 +65,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $apples = Apple::find()->asArray()->all();
-        return $this->render('index', ['apples' => $apples]);
+        //return $this->render('index', ['apples' => $apples, 'gen' => new backend\models\forms\ApplesGenerator]);
+        return $this->render('index', ['apples' => $apples, 'gen' => new ApplesGenerator]);
     }
 
     /**
@@ -100,6 +102,21 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
+    /**
+     * Сгенерировать яблоки.
+     *
+     * @return Response
+     */
+    public function actionGenerateApples()
+    {
+        $gen = new ApplesGenerator();
+        if ($gen->load(Yii::$app->request->post())) {
+            $gen->generate();
+        }
 
         return $this->goHome();
     }

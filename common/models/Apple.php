@@ -42,6 +42,7 @@ class Apple extends ActiveRecord
 
         $this->color = $color;
         $this->status = self::STATUS_HANGING;
+        $this->eaten = 0;
         $this->appeared_at = time(); // TODO TimeZone
         parent::__construct($config);
     }
@@ -65,6 +66,7 @@ class Apple extends ActiveRecord
             ['status', 'default', 'value' => self::STATUS_HANGING],
             ['status', 'in', 'range' => [self::STATUS_HANGING, self::STATUS_FELL, self::STATUS_ROTTEN]],
             ['eaten', 'number', 'min' => 0, 'max' => 100],
+            ['eaten', 'default', 'value' => 0],
         ];
     }
 
