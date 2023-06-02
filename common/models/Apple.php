@@ -37,7 +37,7 @@ class Apple extends ActiveRecord
         return [self::STATUS_HANGING, self::STATUS_FELL, self::STATUS_ROTTEN];
     }
 
-    function __construct($color, $config = []) {
+    function __construct($color = self::COLOR_GREEN, $config = []) {
         // if (!in_array($color, self::colors())) ...
 
         $this->color = $color;
