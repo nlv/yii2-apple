@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'generate-apples', 'delete-rotten', 'fall-ground', 'rot', 'eat', 'delete'],
+                        'actions' => ['logout', 'index', 'generate-apples', 'delete-rotten', 'fall-ground', 'rot', 'eat', 'disapair'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -105,6 +105,22 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+
+    /**
+     * Сгенерировать яблоки.
+     *
+     * @return Response
+     */
+    public function actionGenerateApples()
+    {
+        $gen = new ApplesGenerator();
+        if ($gen->load(Yii::$app->request->post())) {
+            $gen->generate();
+        }
+
+        return $this->goHome();
+    }
+
     /**
      * Удалить прогнившие яблоки.
      *
@@ -127,8 +143,12 @@ class SiteController extends Controller
     {
 
         $apple = $this->findApple($id);
-        $apple->fallGround();
-        $apple->save();
+        $res = $apple->fallGround();
+        if (is_string($res)) {
+            throw new \Exception($res);
+        } else {
+            $apple->save();
+        }
 
         return $this->goHome();
     }
@@ -143,8 +163,12 @@ class SiteController extends Controller
     {
 
         $apple = $this->findApple($id);
-        $apple->rot();
-        $apple->save();
+        $res = $apple->rot();
+        if (is_string($res)) {
+            throw new \Exception($res);
+        } else {
+            $apple->save();
+        }
 
         return $this->goHome();
     }
@@ -162,8 +186,12 @@ class SiteController extends Controller
         // FIXME: Проверка на наличие percent - исключение
         $apple = $this->findApple($id);
         if ($percent = Yii::$app->request->post('percent')) {
-            $apple->eat($percent);
-            $apple->save();
+            $res = $apple->eat($percent);
+            if (is_string($res)) {
+                throw new \Exception($res);
+            } else {
+                $apple->save();
+            }
         }
 
         return $this->goHome();
@@ -175,11 +203,16 @@ class SiteController extends Controller
      * @param $id
      * @return Response
      */
-    public function actionDelete($id)
+    public function actionDisapair($id)
     {
 
         $apple = $this->findApple($id);
-        $apple->delete();
+        $res = $apple->disapair();
+        if (is_string($res)) {
+            throw new \Exception($res);
+        } else {
+//            $apple->save();
+        }
 
         return $this->goHome();
     }

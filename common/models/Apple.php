@@ -5,6 +5,10 @@ namespace common\models;
 use Yii;
 // use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
+use common\models\appleOperations\FallGround;
+use common\models\appleOperations\Eat;
+use common\models\appleOperations\Rot;
+use common\models\appleOperations\Disapair;
 
 /**
  * Apple model
@@ -26,11 +30,15 @@ class Apple extends ActiveRecord
     const STATUS_FELL = 'fell';
     const STATUS_ROTTEN = 'rotten';
 
+    protected static function getOperations()
+    {
+        return ['fallGround' => new FallGround, 'eat' => new Eat, 'disapair' => new Disapair, 'rot' => new Rot];
+    }
+
     public static function colors()
     {
         return [self::COLOR_RED, self::COLOR_GREEN, self::COLOR_YELLOW];
     }
-
 
     public static function statuses()
     {
@@ -70,31 +78,13 @@ class Apple extends ActiveRecord
         ];
     }
 
-    /**
-     * Уронить яблоко
-     */
-    public function fallGround()
+    public function __call ($method, $params)
     {
-        $this->status = self::STATUS_FELL;
-        $this->fell_at = time(); // TODO TimeZone
-    }
-
-    /**
-     * Откусить яблоко
-     *
-     * @param float $val откушенный процент от исходного размера яблока
-     */
-    public function eat(float $val)
-    {
-        $this->eaten += $val;
-    }
-
-    /**
-     * Отметить, что яблоко стало гнилым
-     */
-    public function rot()
-    {
-        $this->status = self::STATUS_ROTTEN;
+        if(isset((self::getOperations())[$method])) {
+            return ((self::getOperations())[$method])->call($this, $params);
+        } else {
+            trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR);
+        }
     }
 
 }
