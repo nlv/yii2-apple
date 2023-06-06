@@ -22,6 +22,7 @@ class Rot extends Operation
         if ($apple->status == Apple::STATUS_HANGING) return "Яблоко висит на дереве";
         if ($apple->status == Apple::STATUS_ROTTEN) return "Яблоко уже прогнило";
         if ($apple->eaten == 100) return "Яблоко съедено полностью";
+        if ($apple->fell_at + Apple::ROTTING_PERIOD > time()) return "Время гниения яблока еще не прошло";
         
         return null;
     }

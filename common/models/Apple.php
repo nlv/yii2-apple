@@ -22,6 +22,9 @@ use common\models\appleOperations\Disapair;
  */
 class Apple extends ActiveRecord
 {
+
+    const ROTTING_PERIOD = 3600 * 5;
+
     const COLOR_RED = 'red';
     const COLOR_GREEN = 'green';
     const COLOR_YELLOW = 'yellow';
