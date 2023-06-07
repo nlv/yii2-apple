@@ -17,7 +17,7 @@ class Rot extends Operation
         return "Прогнило";
     }
 
-    protected function preCondition(Apple &$apple, array $params): null|string
+    public function preCondition(Apple &$apple, array $params = null): null|string
     {
         if ($apple->status == Apple::STATUS_HANGING) return "Яблоко висит на дереве";
         if ($apple->status == Apple::STATUS_ROTTEN) return "Яблоко уже прогнило";

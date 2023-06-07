@@ -12,7 +12,7 @@ use common\models\Apple;
 abstract class Operation
 {
 
-    protected abstract function preCondition(Apple &$apple, array $params): null|string;
+    public abstract function preCondition(Apple &$apple, array $params = null): null|string;
 
     public function call(Apple &$apple, array $params)
     {

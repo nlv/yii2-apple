@@ -64,7 +64,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $apples = Apple::find()->asArray()->all();
+        $apples = Apple::find()->all();
         return $this->render('index', ['apples' => $apples, 'gen' => new ApplesGenerator]);
     }
 

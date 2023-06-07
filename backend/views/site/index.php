@@ -27,10 +27,10 @@ $this->title = 'My Yii Application';
       </br>
       <ul>
       <?php foreach ($apples as $a): ?>
-        <?php $appeared_at = DateTime::createFromFormat('U',$a['appeared_at'])->format("Y-m-d H:i:s")?> 
+        <?php $appeared_at = DateTime::createFromFormat('U',$a->appeared_at)->format("Y-m-d H:i:s")?> 
         <?php 
-          if ($a['fell_at']) {
-              $fell_at = DateTime::createFromFormat('U',$a['fell_at']);
+          if ($a->fell_at) {
+              $fell_at = DateTime::createFromFormat('U',$a->fell_at);
               $fell_passed = (new DateTime('now'))->diff($fell_at);
               $fell_status = "{$fell_at->format('Y-m-d H:i:s')} (прошло {$fell_passed->format('%h')} часов {$fell_passed->format('%i')} минут)";
           } else {
@@ -40,11 +40,16 @@ $this->title = 'My Yii Application';
           }
         ?> 
         <li>
-            <?= "{$a['color']} {$a['status']} {$a['eaten']} {$fell_status}"?> 
+            <?= "{$a->color} {$a->status} {$a->eaten} {$fell_status}"?> 
             </br>
 
             <?php foreach (Apple::getOperations() as $method => $op): ?>
-                <?= $this->render("@app/../common/models/appleOperations/views/{$op->getTemplateName()}", ['label' => $op->getName(), 'method' => $method, 'id' => $a['id']]) ?>
+                <?php if (is_null($op->preCondition($a))): ?>
+                    <?= $this->render(
+                            "@app/../common/models/appleOperations/views/{$op->getTemplateName()}", 
+                            ['label' => $op->getName(), 'method' => $method, 'id' => $a->id]) 
+                    ?>
+                <?php endif; ?>
             <?php endforeach; ?>
 
             <br/>

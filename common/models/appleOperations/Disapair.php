@@ -17,7 +17,7 @@ class Disapair extends Operation
         return "Удалить";
     }
 
-    protected function preCondition(Apple &$apple, array $params): null|string
+    public function preCondition(Apple &$apple, array $params = null): null|string
     {
         if ($apple->status == Apple::STATUS_HANGING) return "Яблоко висит на дереве";
         if ($apple->status == Apple::STATUS_FELL && $apple->eaten != 100) return "Яблоко не съедено полностью";

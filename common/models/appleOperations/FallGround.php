@@ -17,7 +17,7 @@ class FallGround extends Operation
         return "Уронить";
     }
 
-    protected function preCondition(Apple &$apple, array $params): null|string
+    public function preCondition(Apple &$apple, array $params = null): null|string
     {
         if ($apple->status == Apple::STATUS_HANGING) {
             return null;
