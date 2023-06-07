@@ -29,4 +29,20 @@ class Disapair extends Operation
     {
         $apple->delete();
     }
+
+    public function getTemplateName() { return 'simple'; }
+
+    public function getParamsMeta(): array { return []; }
+
+    /* true - если операция производит действия с базой данных
+       пока только для операции disapair (см. соотв. класс) 
+       (хотя, наверное, можно было попробовать реализовывать не через delete, а, например, $apple->deleted = 1)
+
+       В данный момент это означает, что клиенту не надо вызывать save,
+       и надо позаботится о транзакционности (эту тему совсем не раскрыли в текущей реализации)
+
+       Т.е. сейчас, true фактически означает, что в контроллере при обработке disapair не надо делать save()
+       */
+    public function isDbDuty(): bool { return true; }
+
 }

@@ -33,7 +33,7 @@ class Apple extends ActiveRecord
     const STATUS_FELL = 'fell';
     const STATUS_ROTTEN = 'rotten';
 
-    protected static function getOperations()
+    public static function getOperations()
     {
         return ['fallGround' => new FallGround, 'eat' => new Eat, 'disapair' => new Disapair, 'rot' => new Rot];
     }

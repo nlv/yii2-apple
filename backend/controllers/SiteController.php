@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'generate-apples', 'delete-rotten', 'fall-ground', 'rot', 'eat', 'disapair'],
+                        'actions' => ['logout', 'index', 'generate-apples', 'delete-rotten', 'apple-operation'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -133,89 +133,36 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Уронить яблоко.
-     *
-     * @param $id
-     * @return Response
-     */
-    public function actionFallGround($id)
+    public function actionAppleOperation($id, $method)
     {
-
         $apple = $this->findApple($id);
-        $res = $apple->fallGround();
-        if (is_string($res)) {
-            throw new \Exception($res);
-        } else {
-            $apple->save();
+
+        $ops = Apple::getOperations();
+        if (!isset($ops[$method])) {
+            throw new \Exception("Операция '$method' не реализована");
         }
 
-        return $this->goHome();
-    }
+        $op = $ops[$method];
 
-    /**
-     * Сделать яблоко прогнившим.
-     *
-     * @param $id
-     * @return Response
-     */
-    public function actionRot($id)
-    {
-
-        $apple = $this->findApple($id);
-        $res = $apple->rot();
-        if (is_string($res)) {
-            throw new \Exception($res);
-        } else {
-            $apple->save();
-        }
-
-        return $this->goHome();
-    }
-
-    /**
-     * Съесть яблоко.
-     *
-     * @param $id
-     * @return Response
-     */
-    public function actionEat($id)
-    {
-
-        // FIXME: Валидация percent
-        // FIXME: Проверка на наличие percent - исключение
-        $apple = $this->findApple($id);
-        if ($percent = Yii::$app->request->post('percent')) {
-            $res = $apple->eat($percent);
-            if (is_string($res)) {
-                throw new \Exception($res);
-            } else {
-                $apple->save();
+        $params = [];
+        foreach ($op->getParamsMeta() as $p) {
+            if (!($v = Yii::$app->request->post($p))) {
+                throw new \Exception("Не передан параметр '$p'");
             }
+            $params[] = $v;
         }
 
-        return $this->goHome();
-    }
-
-    /**
-     * Удалить яблоко.
-     *
-     * @param $id
-     * @return Response
-     */
-    public function actionDisapair($id)
-    {
-
-        $apple = $this->findApple($id);
-        $res = $apple->disapair();
+        $res = $apple->$method(...$params);
         if (is_string($res)) {
             throw new \Exception($res);
-        } else {
-//            $apple->save();
+        } else if (!$op->isDbDuty()) {
+            $apple->save();
         }
 
         return $this->goHome();
+
     }
+
 
     /**
      * Найти яблоко в базе данных по ид

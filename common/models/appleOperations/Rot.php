@@ -31,4 +31,11 @@ class Rot extends Operation
     {
         $apple->status = Apple::STATUS_ROTTEN;
     }
+
+    public function getTemplateName() { return 'simple'; }
+
+    public function getParamsMeta(): array { return []; }
+
+    public function isDbDuty():bool { return false; }
+
 }

@@ -27,6 +27,21 @@ abstract class Operation
 
     public abstract function getName();
 
+    /*
+      Список названий параметров, которые должны быть переданы в процедуру выполнения операции.
+      Порядок важен. 
+      */
+    public abstract function getParamsMeta(): array;
+
+    public abstract function getTemplateName();
+
     protected abstract function doOperation(&$apple, $params);
+
+    /* true - если операция производит действия с базой данных
+       пока только для операции disapair (см. соотв. класс) 
+       (хотя, наверное, можно было попробовать реализовывать не через delete, а, например, $apple->deleted = 1)
+
+       */
+    public abstract function isDbDuty(): bool;
 
 }

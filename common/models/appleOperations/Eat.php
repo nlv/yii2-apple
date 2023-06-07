@@ -34,4 +34,11 @@ class Eat extends Operation
     {
         $apple->eaten += $params[0];
     }
+
+    public function getTemplateName() { return 'eat'; }
+
+    public function getParamsMeta(): array { return ['percent']; }
+
+    public function isDbDuty():bool { return false; }
+
 }

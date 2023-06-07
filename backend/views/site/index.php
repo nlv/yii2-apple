@@ -3,6 +3,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\models\Apple;
 
 /** @var yii\web\View $this 
     @var array        $apples
@@ -23,6 +24,7 @@ $this->title = 'My Yii Application';
         <p>Яблок нет</p>
     <?php else: ?>
       <?= Html::a('Удалить прогнившие', Url::to(['site/delete-rotten'], true)) ?>
+      </br>
       <ul>
       <?php foreach ($apples as $a): ?>
         <?php $appeared_at = DateTime::createFromFormat('U',$a['appeared_at'])->format("Y-m-d H:i:s")?> 
@@ -39,14 +41,12 @@ $this->title = 'My Yii Application';
         ?> 
         <li>
             <?= "{$a['color']} {$a['status']} {$a['eaten']} {$fell_status}"?> 
-            <?= Html::a('Уронить', Url::to(['site/fall-ground', 'id' => $a['id']], true)) ?>
-            <?= Html::a('Прогнило', Url::to(['site/rot', 'id' => $a['id']], true)) ?>
-            <?= Html::a('Удалить', Url::to(['site/disapair', 'id' => $a['id']], true)) ?>
+            </br>
 
-            <?= Html::beginForm(Url::to(['site/eat', 'id' => $a['id']]), 'post', ['class' => 'form-inline']); ?>
-              <?= Html::textInput('percent', '0', ['type' => 'number']) ?>
-              <?= Html::submitButton('Откусить', ['class' => 'btn btn-success']) ?>
-            <?= Html::endForm(); ?>
+            <?php foreach (Apple::getOperations() as $method => $op): ?>
+                <?= $this->render("@app/../common/models/appleOperations/views/{$op->getTemplateName()}", ['label' => $op->getName(), 'method' => $method, 'id' => $a['id']]) ?>
+            <?php endforeach; ?>
+
             <br/>
         </li>
       <?php endforeach; ?>    

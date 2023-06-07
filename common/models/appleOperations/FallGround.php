@@ -31,4 +31,11 @@ class FallGround extends Operation
         $apple->status = Apple::STATUS_FELL;
         $apple->fell_at = time(); // TODO TimeZone
     }
+
+    public function getTemplateName() { return 'simple'; }
+
+    public function getParamsMeta(): array { return []; }
+
+    public function isDbDuty(): bool { return false; }
+
 }
