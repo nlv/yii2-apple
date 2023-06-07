@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'generate-apples', 'delete-rotten', 'apple-operation'],
+                        'actions' => ['logout', 'index', 'generate-apples', 'mark-rotten', 'delete-rotten', 'apple-operation'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -129,6 +129,22 @@ class SiteController extends Controller
     public function actionDeleteRotten()
     {
         Apple::deleteAll("status = '" . Apple::STATUS_ROTTEN . "'");
+
+        return $this->goHome();
+    }
+
+    /**
+     * Отметить прогнившими яблоки, которым уже пришел срок.
+     *
+     * @return Response
+     */
+    public function actionMarkRotten()
+    {
+        $apples = Apple::find()->where("status = '" . Apple::STATUS_FELL . "'")->andWhere(["<=", 'fell_at', time() - Apple::ROTTING_PERIOD]);
+        foreach ($apples->all() as $a) {
+            $a->rot();
+            $a->save();
+        }
 
         return $this->goHome();
     }

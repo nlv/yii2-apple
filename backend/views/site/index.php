@@ -25,6 +25,9 @@ $this->title = 'My Yii Application';
     <?php else: ?>
       <?= Html::a('Удалить прогнившие', Url::to(['site/delete-rotten'], true)) ?>
       </br>
+      <?= Html::a('Отметить прогнившими', Url::to(['site/mark-rotten'], true)) ?>
+      </br>
+      </br>
       <ul>
       <?php foreach ($apples as $a): ?>
         <?php $appeared_at = DateTime::createFromFormat('U',$a->appeared_at)->format("Y-m-d H:i:s")?> 
